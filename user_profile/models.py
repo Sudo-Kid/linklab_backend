@@ -32,7 +32,7 @@ class SocialDisplaySettings(models.Model):
     position = models.PositiveIntegerField()
     user = models.ForeignKey(
         UserProfile, on_delete=models.PROTECT,
-        related_name='social_display_settings')
+        related_name='services')
 
     def __str__(self):
         return self.name + ' ' + self.user.user.username
