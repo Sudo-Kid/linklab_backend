@@ -137,3 +137,19 @@ SOCIALACCOUNT_PROVIDERS = {
     "twitch": {"SCOPE": ["user_read"]},
 }
 SOCIALACCOUNT_AUTO_SIGNUP = True
+
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY', '')
+GOOGLE_CHANNEL_API = (
+    'https://www.googleapis.com/youtube/v3/channels?'
+    'part=snippet%2CcontentDetails&'
+    'forUsername={user}&key={YOUR_API_KEY}'
+)
+GOOGLE_PLAYLIST_API = (
+   'https://www.googleapis.com/youtube/v3/playlistItems'
+   '?playlistId={playlist_id}'
+   '&maxResults=6&part=snippet&' 
+   'key={YOUR_API_KEY}'
+)
+
+TWITCH_CLIENT_ID = os.environ.get('TWITCH_CLIENT_ID', '')
+TWITCH_VIDEO_API = 'https://api.twitch.tv/helix/videos?user_id={user_id}'
