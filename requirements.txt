@@ -3,3 +3,4 @@ Pillow
 djangorestframework
 psycopg2-binary
 django-allauth
+requests

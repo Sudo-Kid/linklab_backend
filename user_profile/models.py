@@ -30,6 +30,7 @@ class SocialDisplaySettings(models.Model):
     name = models.CharField(max_length=256, default='default')
     limit = models.PositiveIntegerField(default=6)
     position = models.PositiveIntegerField()
+    username = models.CharField(max_length=256, null=True, blank=True)
     user = models.ForeignKey(
         UserProfile, on_delete=models.PROTECT,
         related_name='services')
