@@ -10,4 +10,5 @@ RUN pip3 install -Ur requirements.txt
 COPY . /src
 
 RUN python3 manage.py collectstatic --no-input
+
 CMD ["/bin/bash", "run.sh"]
