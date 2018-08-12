@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.twitch',
+    'raven.contrib.django.raven_compat',
     'rest_framework',
     'user_profile',
 ]
@@ -165,3 +167,10 @@ GOOGLE_PLAYLIST_API = (
 
 TWITCH_CLIENT_ID = os.environ.get('TWITCH_CLIENT_ID', '')
 TWITCH_VIDEO_API = 'https://api.twitch.tv/helix/videos?user_id={user_id}'
+
+RAVEN_CONFIG = {
+    'dsn': 'https://f34ccc7fd60a4eac827c12c96f92dec6:3314af3441994b26b1e7142c16658933@sentry.io/1260826',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+}

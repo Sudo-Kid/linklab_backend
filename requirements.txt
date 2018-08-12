@@ -5,3 +5,4 @@ psycopg2-binary
 django-allauth
 requests
 uwsgi
+raven
