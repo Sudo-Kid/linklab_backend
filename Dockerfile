@@ -3,7 +3,7 @@ EXPOSE 8000:8000
 
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install build-essential libmysqlclient-dev python3-dev -y
+RUN apt-get install build-essential python3-dev -y
 
 WORKDIR /src
 COPY ./requirements.txt /src/
