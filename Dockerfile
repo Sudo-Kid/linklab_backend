@@ -1,5 +1,5 @@
 FROM python:3
-EXPOSE 8000:8000
+EXPOSE 8080:8080
 
 RUN apt-get update
 RUN apt-get upgrade -y
