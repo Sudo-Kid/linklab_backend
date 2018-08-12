@@ -15,5 +15,5 @@ RUN python3 manage.py migrate
 RUN mkdir media
 
 CMD [ "uwsgi", "--http", "0.0.0.0:8080", \
-               "--wsgi-file", "backend/wsgi.py", \
+               "--wsgi-file", "/src/linklab/wsgi.py", \
                "--static-map", "/static=/src/static/"]
