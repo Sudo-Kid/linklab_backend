@@ -30,18 +30,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfile(serializers.ModelSerializer):
     services = serializers.SerializerMethodField()
-    services_order = serializers.SerializerMethodField()
-    twitch = serializers.SerializerMethodField()
-    user = UserSerializer(many=False)
+    user = serializers.SerializerMethodField()
 
     class Meta:
         model = models.UserProfile
         fields = (
             'user',
-            'template',
-            'services',
-            'services_order',
-            'twitch'
+            'services'
         )
 
     @staticmethod
@@ -83,7 +78,7 @@ class UserProfile(serializers.ModelSerializer):
             'channel_url': 'https://www.youtube.com/channel/' + channel_id,
             'data': []
         }
-        for video in videos:
+        for video in videos[:6]:
             snippet = video['snippet']
 
             return_data['data'].append({
@@ -157,20 +152,26 @@ class UserProfile(serializers.ModelSerializer):
                 print('error')
                 social_settings[service.name] = {}
 
+        discord = obj.discord
+        if discord:
+            if discord.startswith('http'):
+                social_settings['discord'] = {
+                    'url': obj.discord
+                }
+            else:
+                social_settings['discord'] = {
+                    'url': 'https://discord.gg/' + obj.discord
+                }
         return social_settings
 
     @staticmethod
-    def get_services_order(obj):
-        social_settings = []
-
-        for service in obj.services.all().order_by('position'):
-            social_settings.append(service.name)
-        return social_settings
-
-    @staticmethod
-    def get_twitch(obj):
+    def get_user(obj):
         twitch = SocialAccount.objects.get(
             provider='twitch', user=obj.user)
+
+        services_order = []
+        for service in obj.services.all().order_by('position'):
+            services_order.append(service.name)
 
         twitch_extra = twitch.extra_data
         twitch_extra.pop('partnered')
@@ -178,4 +179,19 @@ class UserProfile(serializers.ModelSerializer):
         twitch_extra.pop('notifications')
         twitch_extra.pop('_links')
         twitch_extra.pop('_id')
+        twitch_extra['username'] = obj.user.username
+        twitch_extra['template'] = obj.template.name
+        twitch_extra['services_order'] = obj.template.name
         return twitch_extra
+
+
+class UpdateUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserProfile
+        fields = ('template', 'discord')
+
+
+class UpdateSocialDisplaySettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.SocialDisplaySettings
+        fields = ('name', 'limit', 'position', 'user', 'username')
